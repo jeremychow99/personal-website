@@ -1,6 +1,5 @@
 .env
 node_modules
 .DS_Store
-jobs.yaml
-redis.yaml
+secrets.yaml
 
