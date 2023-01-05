@@ -7,7 +7,7 @@ import { ExpressAdapter, createBullBoard, BullAdapter, BullMQAdapter } from '@bu
 import config from './config/config';
 
 const app = express()
-const port = 3000
+const port: Number = 3000
 const serverAdapter = new ExpressAdapter();
 serverAdapter.setBasePath('/admin/queues');
 
@@ -55,7 +55,8 @@ const worker = new Worker('myQueue', async job => {
       console.log(repo.name)
       const doc = new User(
         {
-          title: repo.name
+          title: repo.name,
+          createdAt: new Date()
         }
       )
       doc.save()
