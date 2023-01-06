@@ -27,7 +27,7 @@ spec:
     spec:
       containers:
         - name: background-jobs
-          image: jeremychow99/personal-site-jobs
+          image: jeremychow99/personal-site-jobs:latest
           env:
             - name: MONGO_URL
               valueFrom:
