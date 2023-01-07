@@ -4,7 +4,7 @@ import { ExpressAdapter, createBullBoard, BullAdapter, BullMQAdapter } from '@bu
 import connectToCluster from './db/dbconnect';
 import { myQueue, githubJob } from './jobs/githubJob';
 import sanitizedConfig from './config/config';
-
+import getRepoData from './middleware/getRepoData';
 const app = express()
 const port = sanitizedConfig.PORT
 const serverAdapter = new ExpressAdapter();
@@ -20,8 +20,11 @@ app.use('/admin/queues', serverAdapter.getRouter());
 app.use(cors());
 app.use(express.json());
 
-app.get('/', (req, res) => {
-  res.json({ response: "Hello from Express server" })
+
+app.get('/', async (req, res) => {
+  const repoData = await getRepoData()
+  console.log(repoData);
+  res.send(repoData)
 })
 
 async function startServer() {
