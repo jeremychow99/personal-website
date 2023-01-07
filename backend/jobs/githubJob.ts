@@ -2,7 +2,7 @@ import sanitizedConfig from '../config/config'
 import { Octokit, App } from "octokit";
 import { Worker, Queue } from 'bullmq';
 import mongoose from 'mongoose';
-import { User } from '../models/addData'
+import { gitRepo } from '../models/gitRepos'
 
 export const myQueue = new Queue('myQueue', {
     connection: {
@@ -46,11 +46,16 @@ export function githubJob() {
             clearCollections()
 
             for (let repo of gitResponse.data) {
-                console.log(repo.name)
-                const doc = new User(
+                const doc = new gitRepo(
                     {
-                        title: repo.name,
-                        createdAt: new Date()
+                        repoName: repo.name,
+                        description: repo.description,
+                        createdAt: repo.created_at,
+                        updatedAt: repo.pushed_at,
+                        language: repo.language,
+                        size: repo.size,
+                        url: repo.html_url,
+                        dbEntryCreationTime: new Date()
                     }
                 )
                 doc.save()
