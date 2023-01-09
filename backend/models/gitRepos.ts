@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 const { Schema } = mongoose;
 
 const GitRepoSchema = new Schema({
+  repoNumber: Number,
   repoName:  String, // String is shorthand for {type: String}
   description: String,
   createdAt: String,

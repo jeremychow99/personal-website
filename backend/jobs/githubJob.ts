@@ -38,16 +38,18 @@ export function githubJob() {
                 auth: sanitizedConfig.GITHUB_TOKEN
             })
 
-            const gitResponse = await octokit.request('GET /users/jeremychow99/repos{?type,sort,direction,per_page,page}', {
-                username: 'jeremychow99'
+            const gitResponse = await octokit.request('GET /users/jeremychow99/repos?sort=pushed', {
+                username: 'jeremychow99',
             })
 
 
             clearCollections()
-
+            let i = 0
             for (let repo of gitResponse.data) {
+                
                 const doc = new gitRepo(
-                    {
+                    {   
+                        repoNumber: i,
                         repoName: repo.name,
                         description: repo.description,
                         createdAt: repo.created_at,
@@ -58,6 +60,7 @@ export function githubJob() {
                         dbEntryCreationTime: new Date()
                     }
                 )
+                i += 1
                 doc.save()
             }
         }
