@@ -12,6 +12,7 @@ interface repo {
   createdAt: string;
   updatedAt: string;
   language: string;
+  topics: Array<string>;
   size: number;
   url: string;
   dbEntryCreationTime: string;
@@ -29,17 +30,23 @@ async function getRepoData() {
 }
 
 export default async function Table() {
+  const topicList = ["firebase", "kubernetes", "vite"]
   const repos = await getRepoData();
-
+  console.log(repos)
   return (
     <div>
-      <table className="table shadow-lg bg-white table-responsive text-center">
+      <table
+        className="table shadow-lg bg-white table-responsive text-center"
+        style={{
+          borderCollapse: "separate",
+          borderSpacing: "15px 10px",
+        }}
+      >
         <thead className="border-grey-200 border-b-2 text-xl">
           <tr>
             <td>Repository Name</td>
             <td>Description</td>
-            <td>Language</td>
-            <td>Created</td>
+            <td>tools</td>
             <td>Updated</td>
             <td>Size(kb)</td>
             <td>Download</td>
@@ -48,7 +55,7 @@ export default async function Table() {
         <tbody>
           {repos.map(function (item: repo, i) {
             return (
-              <tr key={i} className="text-lg">
+              <tr key={item._id} className="text-lg">
                 <td>
                   <a
                     href={item.url}
@@ -58,18 +65,27 @@ export default async function Table() {
                   </a>
                 </td>
                 <td>{item.description?.slice(0, 30) + "..."}</td>
-                <td>{item.language}</td>
-                <td>{item.createdAt.slice(0, 10)}</td>
-                <td>{item.updatedAt.slice(0, 10)}</td>
                 <td>
-                  {item.size.toString()}
+                    {item.topics.map((topic, index) => {
+                      let postfix =  topicList.includes(topic) ? "-plain.svg" : "-original.svg"
+                      return <img className="inline px-0.5" src={"https://cdn.jsdelivr.net/gh/devicons/devicon/icons/" + topic + "/" + topic + postfix} style={{height: '30px', width: '30px'}} />
+                    })}
                 </td>
+                <td>{item.updatedAt.slice(0, 10)}</td>
+                <td>{item.size.toString()}</td>
                 <td>
-                  <a href={'https://api.github.com/repos/jeremychow99/'+ item.repoName + '/zipball/'}>
+                  <a
+                    href={
+                      "https://api.github.com/repos/jeremychow99/" +
+                      item.repoName +
+                      "/zipball/"
+                    }
+                  >
                     <FontAwesomeIcon
-                    icon={faDownload}
-                    style={{ fontSize: 20, color: "black" }}
-                  /></a>
+                      icon={faDownload}
+                      style={{ fontSize: 20, color: "black" }}
+                    />
+                  </a>
                 </td>
               </tr>
             );
