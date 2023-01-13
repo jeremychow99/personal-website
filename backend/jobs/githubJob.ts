@@ -55,6 +55,7 @@ export function githubJob() {
                         createdAt: repo.created_at,
                         updatedAt: repo.pushed_at,
                         language: repo.language,
+                        topics: repo.topics,
                         size: repo.size,
                         url: repo.html_url,
                         dbEntryCreationTime: new Date()

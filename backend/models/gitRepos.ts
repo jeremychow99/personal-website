@@ -8,6 +8,7 @@ const GitRepoSchema = new Schema({
   createdAt: String,
   updatedAt: String,
   language: String,
+  topics: Array,
   size: Number,
   url: String,
   dbEntryCreationTime: String,

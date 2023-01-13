@@ -23,7 +23,6 @@ app.use(express.json());
 
 app.get('/', async (req, res) => {
   const repoData = await getRepoData()
-
   res.send(repoData)
 })
 
