@@ -1,10 +1,16 @@
 import express from 'express'
-import router from './Routes/main'
+import cors from 'cors'
 import connectToCluster from './db/connect';
+import router from './Routes/main';
+
+
 const app = express()
+import { errorHandlerMiddleware } from './middleware/error-handler'
 
 app.use(express.json());
 app.use('/', router)
+
+app.use(errorHandlerMiddleware)
 
 async function startServer() {
   try {
@@ -15,6 +21,8 @@ async function startServer() {
   }
   catch (error) {
     console.log(error);
+    console.log('ther was error');
+    
 
   }
 }

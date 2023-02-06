@@ -1,9 +1,9 @@
 import express from "express";
-import { register } from '../middleware/auth'
+import 'express-async-errors';
+import { register, login } from '../controllers/auth'
 
 const router = express.Router()
 
-// router.post('/login', userController.loginOne);
 router.post('/register', register);
-
+router.post('/login', login)
 export default router;
