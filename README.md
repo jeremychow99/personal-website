@@ -51,13 +51,16 @@ A single Express server with bullMQ, which allows it to run background jobs. It 
 - The data is stored in MongoDB Atlas. 
 - Sends the repo data as JSON to frontend via HTTP.
 - Tested to be working on local Minikube k8s cluster.
-- '/admin/queues' will bring up the bullboard UI to view all bullMQ queues.
+- '/admin/queues' will bring up the bullboard UI to view all bullMQ queues (require user to be authenticated via JWT).
 
 
 ---
 ## Auth Server
-### STATUS: TO-DO
+### STATUS: DONE
 To authenticate user (me) from the frontend login page, so that they can access bullMQ bullboard page.
+- Express server, used Bcrypt, JSON Web Tokens.
+- Has Register and Login routes. Upon registration, user credentials are salted, hashed, then stored in DB.
+- Check user credentials on login, return JWT if successful. Other Microservices then check for the JWT.
 - Might be more useful if future features/services require authentication.
 
 ---
