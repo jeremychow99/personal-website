@@ -22,8 +22,6 @@ async function startServer() {
   }
   catch (error) {
     console.log(error);
-    console.log('ther was error');
-
 
   }
 }
