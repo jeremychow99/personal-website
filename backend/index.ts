@@ -5,7 +5,7 @@ import connectToCluster from './db/dbconnect';
 import { myQueue, githubJob } from './jobs/githubJob';
 import sanitizedConfig from './config/config';
 import getRepoData from './middleware/getRepoData';
-import {auth} from './middleware/authentication'
+import { auth } from './middleware/authentication'
 
 const app = express()
 const router = express.Router()
@@ -23,7 +23,7 @@ app.use('/admin/queues', serverAdapter.getRouter());
 app.use(cors());
 app.use(express.json());
 
-app.use('/', auth)
+app.use('/admin/queues', auth)
 app.get('/', async (req, res) => {
   const repoData = await getRepoData()
   res.send(repoData)

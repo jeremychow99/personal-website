@@ -38,7 +38,7 @@ export function githubJob() {
                 auth: sanitizedConfig.GITHUB_TOKEN
             })
 
-            const gitResponse = await octokit.request('GET /users/jeremychow99/repos?sort=pushed', {
+            const gitResponse = await octokit.request('GET /users/jeremychow99/repos?sort=pushed&type=all', {
                 username: 'jeremychow99',
             })
 

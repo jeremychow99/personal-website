@@ -21,99 +21,98 @@ interface repo {
 }
 
 async function getRepoData() {
+  const result = await fetch("http://host.docker.internal:8080/");
+  const repoData = await result.json();
+  console.log(repoData);
 
-    const result = await fetch("http://127.0.0.1:8080/");
-    const repoData = await result.json();
-    let gitRepos: Array<repo> = [];
-    for (let repo of repoData) {
-      gitRepos.push(repo);
-    }return gitRepos;
+  let gitRepos: Array<repo> = [];
+  for (let repo of repoData) {
+    gitRepos.push(repo);
+  }
+  return gitRepos;
 }
 
 export default async function Table() {
   const topicList = ["firebase", "kubernetes", "vite"];
   try {
     var repos = await getRepoData();
-  } catch (error){
+    console.log(repos);
+  } catch (error) {
     repos = [];
   }
-  if (repos.length != 0) {
-    return (
-      <div>
-        <table
-          className="table shadow-lg bg-white table-responsive text-center"
-          style={{
-            borderCollapse: "separate",
-            borderSpacing: "15px 10px",
-          }}
-        >
-          <thead className="border-grey-200 border-b-2 text-xl">
-            <tr>
-              <td>Repository Name</td>
-              <td>Description</td>
-              <td>tools</td>
-              <td>Updated</td>
-              <td>Size(kb)</td>
-              <td>Download</td>
-            </tr>
-          </thead>
-          <tbody>
-            {repos.map(function (item: repo, i) {
-              return (
-                <tr key={item._id} className="text-lg">
-                  <td>
-                    <a
-                      href={item.url}
-                      style={{ color: "blue", textDecoration: "underline" }}
-                    >
-                      {item.repoName}
-                    </a>
-                  </td>
-                  <td>{item.description?.slice(0, 30) + "..."}</td>
-                  <td>
-                    {item.topics.map((topic, index) => {
-                      let postfix = topicList.includes(topic)
-                        ? "-plain.svg"
-                        : "-original.svg";
-                      return (
-                        <img
-                          className="inline px-0.5"
-                          src={
-                            "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/" +
-                            topic +
-                            "/" +
-                            topic +
-                            postfix
-                          }
-                          style={{ height: "30px", width: "30px" }}
-                        />
-                      );
-                    })}
-                  </td>
-                  <td>{item.updatedAt.slice(0, 10)}</td>
-                  <td>{item.size.toString()}</td>
-                  <td>
-                    <a
-                      href={
-                        "https://api.github.com/repos/jeremychow99/" +
-                        item.repoName +
-                        "/zipball/"
-                      }
-                    >
-                      <FontAwesomeIcon
-                        icon={faDownload}
-                        style={{ fontSize: 20, color: "black" }}
+  return (
+    <div>
+      <table
+        className="table shadow-lg bg-white table-responsive text-center"
+        style={{
+          borderCollapse: "separate",
+          borderSpacing: "15px 10px",
+        }}
+      >
+        <thead className="border-grey-200 border-b-2 text-xl">
+          <tr>
+            <td>Repository Name</td>
+            <td>Description</td>
+            <td>tools</td>
+            <td>Updated</td>
+            <td>Size(kb)</td>
+            <td>Download</td>
+          </tr>
+        </thead>
+        <tbody>
+          {repos.map(function (item: repo, i) {
+            return (
+              <tr key={item._id} className="text-lg">
+                <td>
+                  <a
+                    href={item.url}
+                    style={{ color: "blue", textDecoration: "underline" }}
+                  >
+                    {item.repoName}
+                  </a>
+                </td>
+                <td>{item.description?.slice(0, 30) + "..."}</td>
+                <td>
+                  {item.topics.map((topic, index) => {
+                    let postfix = topicList.includes(topic)
+                      ? "-plain.svg"
+                      : "-original.svg";
+                    return (
+                      <img
+                        className="inline px-0.5"
+                        src={
+                          "https://cdn.jsdelivr.net/gh/devicons/devicon/icons/" +
+                          topic +
+                          "/" +
+                          topic +
+                          postfix
+                        }
+                        style={{ height: "30px", width: "30px" }}
                       />
-                    </a>
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
-    );
-  } else{
-    return <h1>API FETCH ERROR</h1>
-  }
+                    );
+                  })}
+                </td>
+                <td>{item.updatedAt.slice(0, 10)}</td>
+                <td>{item.size.toString()}</td>
+                <td>
+                  <a
+                    href={
+                      "https://api.github.com/repos/jeremychow99/" +
+                      item.repoName +
+                      "/zipball/"
+                    }
+                  >
+                    <FontAwesomeIcon
+                      icon={faDownload}
+                      style={{ fontSize: 20, color: "black" }}
+                    />
+                  </a>
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </div>
+  );
 }

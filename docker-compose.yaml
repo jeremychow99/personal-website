@@ -1,0 +1,28 @@
+version: "3.9"
+services:
+  auth:
+    image: jeremychow99/personal-site-auth:latest
+    ports:
+      - "3001:3001"
+    restart: always
+
+  redis:
+    image: redis
+    ports:
+      - "6379:6379"
+    restart: always
+
+  backend-jobs:
+    image: jeremychow99/personal-site-jobs:latest
+    restart: always
+    ports:
+      - "8080:8080"
+
+  frontend:
+    image: jeremychow99/personal-site-frontend:latest
+    restart: always
+    depends_on:
+      - backend-jobs
+      - auth
+    ports:
+      - "3000:3000"
